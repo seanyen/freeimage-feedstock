@@ -5,7 +5,7 @@ Home: http://freeimage.sourceforge.net/
 
 Package license: GPLv2 and FreeImage Public License
 
-Feedstock license: BSD
+Feedstock license: BSD 3-Clause
 
 Summary: Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others).
 
@@ -69,9 +69,15 @@ Terminology
 
 Current build status
 ====================
+
 Linux: [![Circle CI](https://circleci.com/gh/conda-forge/freeimage-feedstock.svg?style=svg)](https://circleci.com/gh/conda-forge/freeimage-feedstock)
 OSX: [![TravisCI](https://travis-ci.org/conda-forge/freeimage-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/freeimage-feedstock) 
 Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/freeimage-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/freeimage-feedstock/branch/master)
+
+Current release info
+====================
+Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/freeimage/badges/version.svg)](https://anaconda.org/conda-forge/freeimage)
+Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/freeimage/badges/downloads.svg)](https://anaconda.org/conda-forge/freeimage)
 
 
 Updating freeimage-feedstock
