@@ -1,4 +1,4 @@
-{% set version = "3.17.0" %}
+{% set version = "3.18.0" %}
 
 
 package:
@@ -7,16 +7,21 @@ package:
     # note: also update version in run_test.py
 
 source:
-    fn: FreeImage3170.zip
-    url: http://optimate.dl.sourceforge.net/project/freeimage/Source%20Distribution/{{ version }}/FreeImage{{ version.replace(".", "") }}.zip
-    md5: 459e15f0ec75d6efa3c7bd63277ead86
-    
+    fn: FreeImage{{ version.replace(".", "") }}.zip
+    url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace(".", "") }}.zip
+    sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd
     patches:
         - Makefile.osx.patch  # [osx]
 
 build:
     number: 0
-    skip: true  # [win]
+    skip: true  # [win and vc<14]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - make  # [unix]
 
 test:
     requires:
