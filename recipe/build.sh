@@ -3,9 +3,12 @@
 export CPPFLAGS="-I${PREFIX}/include"
 export LDFLAGS="-L${PREFIX}/lib"
 
+# freeimage does not build with conda-forge's default c++1z
+export CXXFLAGS="${CXXFLAGS} -std=c++14"
+
 cd ${SRC_DIR} || exit 1;
 
-LANG="C" sed -i.bak 's:-o root -g root::' Makefile* || exit 1;
+LC_CTYPE=C sed -i.bak 's:-o root -g root::' Makefile* || exit 1;
 
 make || exit 1;
 
