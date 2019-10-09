@@ -10,10 +10,13 @@ source:
     fn: FreeImage{{ version.replace(".", "") }}.zip
     url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace(".", "") }}.zip
     sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd
+    patches:
+        - Makefile.osx.patch  # [osx]
 
 build:
     number: 0
     skip: true  # [win and vc<14]
+    binary_relocation: False  # [osx]
     run_exports:
         - {{ pin_subpackage('freeimage', max_pin='x.x') }}
 
