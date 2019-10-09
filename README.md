@@ -3,7 +3,7 @@ About freeimage
 
 Home: http://freeimage.sourceforge.net/
 
-Package license: GPLv2 and FreeImage Public License
+Package license: GPLv2 GPLv3 FreeImage
 
 Feedstock license: BSD 3-Clause
 
