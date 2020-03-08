@@ -1,49 +1,67 @@
 {% set version = "3.18.0" %}
-
+{% set name = 'freeimage' %}
 
 package:
-    name: freeimage
+    name: {{ name }}
     version: {{ version }}
-    # note: also update version in run_test.py
+    # note: also update version in CMakeLists and in tests.
 
 source:
-    fn: FreeImage{{ version.replace(".", "") }}.zip
-    url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace(".", "") }}.zip
+  - url: http://downloads.sourceforge.net/freeimage/FreeImage{{ version.replace('.', '') }}.zip
     sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd
-    patches:
-        - Makefile.osx.patch  # [osx]
+
+  - path: CMakeLists.txt
+  - path: FreeImageConfig-dynamic.h
+  - path: FreeImageConfig-static.h
 
 build:
-    number: 0
-    skip: true  # [win and vc<14]
-    binary_relocation: False  # [osx]
-    run_exports:
-        - {{ pin_subpackage('freeimage', max_pin='x.x') }}
+  number: 2
+  skip: true  # [win]
+  run_exports:
+    - {{ pin_subpackage(name, max_pin='x.x') }}
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - cmake
     - make  # [unix]
+    # need to convert line endings for the patches to work
+    - dos2unix  # [unix]
+  host:
+    # or use jpeg-turbo?
+    - jpeg
+    - openjpeg
+    - jxrlib
+    - libtiff
+    - openexr
+    - libpng
+    - zlib
+    - libraw
+    - libwebp
+    - ilmbase
 
 test:
-    requires:
-        - python
-    commands:
-        - python run_test.py
+  commands:
+    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}  # [linux]
+    - test -f $PREFIX/lib/libfreeimage${SHLIB_EXT}.{{ version.split('.')[0] }}  # [linux]
+    - test -f $PREFIX/lib/libfreeimage.{{ version.split('.')[0] }}${SHLIB_EXT}  # [osx]
+    - test -f $PREFIX/lib/libfreeimage-{{ version }}${SHLIB_EXT}  # [unix]
+    - test -f $PREFIX/include/FreeImage.h  # [unix]
 
 about:
-    home: http://freeimage.sourceforge.net/
-    license: GPLv2 GPLv3 FreeImage
-    license_file:
-        - license-fi.txt
-        - license-gplv2.txt
-        - license-gplv3.txt
-    summary: Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others).
+  home: http://freeimage.sourceforge.net/
+  license: GPLv2 GPLv3 FreeImage
+  license_file:
+      - license-fi.txt
+      - license-gplv2.txt
+      - license-gplv3.txt
+  summary: Helps provide support for many common image formats (PNG, JPEG, TIFF, BMP and others).
 
 extra:
-    recipe-maintainers:
-        - almarklein
-        - jakirkham
-        - msarahan
-        - seanyen
+  recipe-maintainers:
+    - almarklein
+    - jakirkham
+    - msarahan
+    - wolfv
+    - seanyen
