@@ -19,7 +19,7 @@ else()
 endif()
 
 # Fix compilation of jxrlib
-add_definitions('-DDISABLE_PERF_MEASUREMENT -D__ANSI__')
+add_definitions(-DDISABLE_PERF_MEASUREMENT -D__ANSI__)
 
 find_package(ZLIB     REQUIRED)
 find_package(PNG      REQUIRED)
@@ -31,7 +31,7 @@ find_package(JXR      REQUIRED)
 find_package(LibRaw   REQUIRED)
 find_package(OpenEXR  REQUIRED)
 
-set(OpenEXR_LIBRARIES IlmImf)
+set(OpenEXR_LIBRARIES IlmImf Iex Half)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(INSTALL_HEADERS "Install the development headers" ON)
@@ -100,14 +100,6 @@ set_target_properties(freeimage
     VERSION "${VERSION}"
     SOVERSION "${SOVERSION}"
 )
-
-if (NOT WIN32)
-    # TODO remove with next major release!
-    add_custom_target(versioned_link_target ALL
-                      COMMAND ${CMAKE_COMMAND} -E create_symlink
-                              "${CMAKE_INSTALL_PREFIX}/lib/libfreeimage${CMAKE_SHARED_LIBRARY_SUFFIX}.${VERSION}"
-                              "${CMAKE_INSTALL_PREFIX}/lib/libfreeimage-${VERSION}${CMAKE_SHARED_LIBRARY_SUFFIX}")
-endif()
 
 if(BUILD_SHARED_LIBS)
     target_compile_definitions(freeimage PRIVATE -DFREEIMAGE_EXPORTS)
