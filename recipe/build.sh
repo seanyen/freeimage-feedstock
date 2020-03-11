@@ -1,19 +1,37 @@
 #!/bin/bash
 
-export CPPFLAGS="-I${PREFIX}/include"
-export LDFLAGS="-L${PREFIX}/lib"
+dos2unix Source/**/*.cpp
 
-# freeimage does not build with conda-forge's default c++1z
-export CXXFLAGS="${CXXFLAGS} -std=c++14"
+patch -p1 < $RECIPE_DIR/patches/Use-system-libs.patch
+patch -p1 < $RECIPE_DIR/patches/Fix-compatibility-with-system-libpng.patch
+patch -p1 < $RECIPE_DIR/patches/CVE-2019-12211-13.patch
 
-cd ${SRC_DIR} || exit 1;
+# remove all included libs to make sure these don't get used during compile
+rm -r Source/Lib* Source/ZLib Source/OpenEXR
+# clear files which cannot be built due to dependencies on private headers
+# (see also unbundle patch)
+> Source/FreeImage/PluginG3.cpp
+> Source/FreeImageToolkit/JPEGTransform.cpp
 
-LC_ALL=C sed -i.bak 's:-o root -g root::' Makefile* || exit 1;
-LC_ALL=C sed -i.bak 's:-o root -g wheel::' Makefile* || exit 1;
+mkdir -p build
+cd build
 
-make || exit 1;
+cmake -DCMAKE_INSTALL_PREFIX=$PREFIX \
+      -DCMAKE_PREFIX_PATH=$PREFIX \
+      -DCMAKE_INSTALL_LIBDIR=lib \
+      -DBUILD_SHARED_LIBS=ON \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_MODULE_PATH="$RECIPE_DIR/cmake;${CMAKE_MODULE_PATH}" \
+      -DCMAKE_FIND_ROOT_PATH=$PREFIX \
+      -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+      -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+      -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+      -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+      -DCMAKE_FIND_FRAMEWORK=NEVER \
+      -DCMAKE_FIND_APPBUNDLE=NEVER \
+      ..
 
-mkdir -p ${PREFIX}/lib || exit 1;
-mkdir -p ${PREFIX}/include || exit 1;
+make VERBOSE=1 -j${CPU_COUNT}
+make install
 
-make install PREFIX="${PREFIX}" DESTDIR="${PREFIX}" INCDIR="${PREFIX}/include" INSTALLDIR="${PREFIX}/lib" || exit 1;
+cmake -E create_symlink ${PREFIX}/lib/libfreeimage${SHLIB_EXT} ${PREFIX}/lib/libfreeimage-${PKG_VERSION}${SHLIB_EXT}
