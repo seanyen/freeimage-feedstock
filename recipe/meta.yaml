@@ -11,6 +11,7 @@ source:
     sha256: f41379682f9ada94ea7b34fe86bf9ee00935a3147be41b6569c9605a53e438fd
     patches:
       - fix_beta.patch  # [ppc64le]
+      - fix_libraw_0_20.patch
   # The below files are taken (and adapted) from VCPKG: https://github.com/microsoft/vcpkg/tree/master/ports/freeimage
   # The patches have been taken (and modified) from Debian / Fedora / VCPKG
   - path: CMakeLists.txt
@@ -41,7 +42,7 @@ requirements:
     - openexr
     - libpng
     - zlib
-    - libraw <0.20
+    - libraw
     - libwebp
     - ilmbase
 
