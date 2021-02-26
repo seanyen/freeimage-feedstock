@@ -29,7 +29,7 @@ libwebp:
 openexr:
 - '2.5'
 openjpeg:
-- '2.3'
+- '2.4'
 pin_run_as_build:
   jpeg:
     max_pin: x
