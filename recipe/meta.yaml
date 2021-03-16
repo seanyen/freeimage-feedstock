@@ -54,7 +54,9 @@ test:
     - test -f $PREFIX/lib/libfreeimage.{{ version.split('.')[0] }}${SHLIB_EXT}  # [osx]
     - test -f $PREFIX/lib/libfreeimage-{{ version }}${SHLIB_EXT}  # [unix]
     - test -f $PREFIX/include/FreeImage.h  # [unix]
-
+    - if exist %PREFIX%\\Library\\include\\FreeImage.h (exit 0) else (exit 1)  # [win]
+    - if exist $PREFIX$\\Library\\lib\\freeimage.lib (exit 0) else (exit 1)  # [win]
+    - if exist $PREFIX$\\Library\\bin\\freeimage.dll (exit 0) else (exit 1)  # [win]
 about:
   home: http://freeimage.sourceforge.net/
   license: GPLv2 GPLv3 FreeImage
