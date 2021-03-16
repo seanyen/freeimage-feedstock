@@ -30,9 +30,13 @@ cmake -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -DCMAKE_FIND_APPBUNDLE=NEVER ^
       -G "Ninja" ^
       ..
+if errorlevel exit 1
 
 ninja
+if errorlevel exit 1
+
 ninja install
+if errorlevel exit 1
 
 rem cmake -E create_symlink ${PREFIX}/lib/libfreeimage${SHLIB_EXT} ${PREFIX}/lib/libfreeimage-${PKG_VERSION}${SHLIB_EXT}
 
