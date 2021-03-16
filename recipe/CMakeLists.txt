@@ -115,7 +115,7 @@ target_include_directories(freeimage PRIVATE ${REAL_SOURCE_DIR}
                                              ${TIFF_INCLUDE_DIRS}
                                              ${PNG_INCLUDE_DIRS}
                                              ${OPENJPEG_INCLUDE_DIRS}
-                                             ${WEBP_INCLUDE_DIRS}
+                                             ${WebP_INCLUDE_DIRS}
                                              ${JXR_INCLUDE_DIRS}
                                              ${LibRaw_INCLUDE_DIRS}
                                              ${OpenEXR_INCLUDE_DIRS}
@@ -127,7 +127,7 @@ target_link_libraries(freeimage ${ZLIB_LIBRARIES}
                                 ${TIFF_LIBRARIES}
                                 ${PNG_LIBRARIES}
                                 ${OPENJPEG_LIBRARIES}
-                                ${WEBP_LIBRARIES}
+                                ${WebP_LIBRARIES}
                                 ${JXR_LIBRARIES}
                                 ${LibRaw_LIBRARIES}
                                 ${OpenEXR_LIBRARIES})
