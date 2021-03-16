@@ -21,6 +21,8 @@ endif()
 # Fix compilation of jxrlib
 add_definitions(-DDISABLE_PERF_MEASUREMENT -D__ANSI__)
 
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 find_package(ZLIB     REQUIRED)
 find_package(PNG      REQUIRED)
 find_package(JPEG     REQUIRED)
