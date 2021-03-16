@@ -13,12 +13,12 @@ mark_as_advanced(JXR_INCLUDE_DIRS)
 
 include(SelectLibraryConfigurations)
 
-find_library(JPEGXR_LIBRARY_RELEASE NAMES jpegxr PATH_SUFFIXES lib)
-find_library(JPEGXR_LIBRARY_DEBUG NAMES jpegxrd PATH_SUFFIXES lib)
+find_library(JPEGXR_LIBRARY_RELEASE NAMES jpegxr libjpegxr PATH_SUFFIXES lib)
+find_library(JPEGXR_LIBRARY_DEBUG NAMES jpegxrd libjpegxrd PATH_SUFFIXES lib)
 select_library_configurations(JPEGXR)
 
-find_library(JXRGLUE_LIBRARY_RELEASE NAMES jxrglue PATH_SUFFIXES lib)
-find_library(JXRGLUE_LIBRARY_DEBUG NAMES jxrglued PATH_SUFFIXES lib)
+find_library(JXRGLUE_LIBRARY_RELEASE NAMES jxrglue libjxrglue PATH_SUFFIXES lib)
+find_library(JXRGLUE_LIBRARY_DEBUG NAMES jxrglued libjxrglued PATH_SUFFIXES lib)
 select_library_configurations(JXRGLUE)
 
 set(JXR_LIBRARIES ${JPEGXR_LIBRARY} ${JXRGLUE_LIBRARY})
