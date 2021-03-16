@@ -10,11 +10,11 @@ find_path(WebP_INCLUDE_DIRS
 )
 mark_as_advanced(WebP_INCLUDE_DIRS)
 
-find_library(WebP_LIBRARY_RELEASE NAMES webp PATH_SUFFIXES lib)
-find_library(WebP_LIBRARY_DEBUG NAMES webpd PATH_SUFFIXES lib)
+find_library(WebP_LIBRARY_RELEASE NAMES webp libwebp PATH_SUFFIXES lib)
+find_library(WebP_LIBRARY_DEBUG NAMES webpd libwebpd PATH_SUFFIXES lib)
 
-find_library(WebPMUX_LIBRARY_RELEASE NAMES webpmux PATH_SUFFIXES lib)
-find_library(WebPMUX_LIBRARY_DEBUG NAMES webpmuxd PATH_SUFFIXES lib)
+find_library(WebPMUX_LIBRARY_RELEASE NAMES webpmux libwebpmux PATH_SUFFIXES lib)
+find_library(WebPMUX_LIBRARY_DEBUG NAMES webpmuxd libwebpmuxd PATH_SUFFIXES lib)
 
 include(SelectLibraryConfigurations)
 select_library_configurations(WebP)
