@@ -140,6 +140,10 @@ target_link_libraries(${FREEIMAGE_LIBRARY_NAME} ${ZLIB_LIBRARIES}
 
 target_compile_definitions(${FREEIMAGE_LIBRARY_NAME} PRIVATE ${PNG_DEFINITIONS})
 
+if(MSVC)
+  set_target_properties(${FREEIMAGE_LIBRARY_NAME} PROPERTIES LINK_FLAGS "/VERBOSE:LIB")
+endif()
+
 # FreeImagePlus
 file(GLOB FREEIMAGEPLUS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Wrapper/FreeImagePlus/src/*.cpp)
 add_library(freeimageplus
