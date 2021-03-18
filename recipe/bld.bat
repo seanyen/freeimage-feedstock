@@ -5,7 +5,7 @@ patch -p1 < %RECIPE_DIR%/patches/Fix-compatibility-with-system-libpng.patch
 patch -p1 < %RECIPE_DIR%/patches/CVE-2019-12211-13.patch
 
 rem remove all included libs to make sure these don't get used during compile
-rm -r Source/Lib* Source/ZLib Source/OpenEXR
+del /Q /S Source\Lib* Source\ZLib Source\OpenEXR
 
 rem clear files which cannot be built due to dependencies on private headers
 rem see also unbundle patch
