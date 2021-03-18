@@ -95,21 +95,27 @@ else()
 endif()
 list(APPEND PUBLIC_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/FreeImageConfig.h)
 
-add_library(freeimage ${SRCS} ${PRIVATE_HEADERS} ${PUBLIC_HEADERS})
+if(WIN32)
+  set(FREEIMAGE_LIBRARY_NAME "FreeImage")
+else()
+  set(FREEIMAGE_LIBRARY_NAME "freeimage")
+endif()
 
-set_target_properties(freeimage
+add_library(${FREEIMAGE_LIBRARY_NAME} ${SRCS} ${PRIVATE_HEADERS} ${PUBLIC_HEADERS})
+
+set_target_properties(${FREEIMAGE_LIBRARY_NAME}
   PROPERTIES
     VERSION "${VERSION}"
     SOVERSION "${SOVERSION}"
 )
 
 if(BUILD_SHARED_LIBS)
-    target_compile_definitions(freeimage PRIVATE -DFREEIMAGE_EXPORTS)
+    target_compile_definitions(${FREEIMAGE_LIBRARY_NAME} PRIVATE -DFREEIMAGE_EXPORTS)
 else()
-    target_compile_definitions(freeimage PRIVATE -DFREEIMAGE_LIB)
+    target_compile_definitions(${FREEIMAGE_LIBRARY_NAME} PRIVATE -DFREEIMAGE_LIB)
 endif()
 
-target_include_directories(freeimage PRIVATE ${REAL_SOURCE_DIR}
+target_include_directories(${FREEIMAGE_LIBRARY_NAME} PRIVATE ${REAL_SOURCE_DIR}
                                              ${ZLIB_INCLUDE_DIRS}
                                              ${JPEG_INCLUDE_DIRS}
                                              ${TIFF_INCLUDE_DIRS}
@@ -122,7 +128,7 @@ target_include_directories(freeimage PRIVATE ${REAL_SOURCE_DIR}
                                              ${CMAKE_CURRENT_BINARY_DIR})
 
 
-target_link_libraries(freeimage ${ZLIB_LIBRARIES}
+target_link_libraries(${FREEIMAGE_LIBRARY_NAME} ${ZLIB_LIBRARIES}
                                 ${JPEG_LIBRARIES}
                                 ${TIFF_LIBRARIES}
                                 ${PNG_LIBRARIES}
@@ -132,7 +138,7 @@ target_link_libraries(freeimage ${ZLIB_LIBRARIES}
                                 ${LibRaw_LIBRARIES}
                                 ${OpenEXR_LIBRARIES})
 
-target_compile_definitions(freeimage PRIVATE ${PNG_DEFINITIONS})
+target_compile_definitions(${FREEIMAGE_LIBRARY_NAME} PRIVATE ${PNG_DEFINITIONS})
 
 # FreeImagePlus
 file(GLOB FREEIMAGEPLUS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Wrapper/FreeImagePlus/src/*.cpp)
@@ -151,11 +157,11 @@ target_include_directories(freeimageplus PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Wra
                                                  ${CMAKE_CURRENT_BINARY_DIR}
                                                  ${REAL_SOURCE_DIR})
 
-target_link_libraries(freeimageplus PUBLIC freeimage)
+target_link_libraries(freeimageplus PUBLIC ${FREEIMAGE_LIBRARY_NAME})
 
 list(APPEND PUBLIC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/Wrapper/FreeImagePlus/FreeImagePlus.h)
 
-install(TARGETS freeimage
+install(TARGETS ${FREEIMAGE_LIBRARY_NAME}
         COMPONENT runtime
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT bin
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shlib
