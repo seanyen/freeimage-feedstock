@@ -26,13 +26,13 @@ cmake -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -DCMAKE_BUILD_TYPE=Release ^
       -G "Ninja" ^
       ..
-if errorlevel exit 1
+if errorlevel 1 exit 1
 
 ninja -v
-if errorlevel exit 1
+if errorlevel 1 exit 1
 
 ninja install
-if errorlevel exit 1
+if errorlevel 1 exit 1
 
 rem cmake -E create_symlink ${PREFIX}/lib/libfreeimage${SHLIB_EXT} ${PREFIX}/lib/libfreeimage-${PKG_VERSION}${SHLIB_EXT}
 
