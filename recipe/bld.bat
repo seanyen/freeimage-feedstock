@@ -28,7 +28,7 @@ cmake -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       ..
 if errorlevel exit 1
 
-ninja
+ninja -v
 if errorlevel exit 1
 
 ninja install
