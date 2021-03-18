@@ -13,6 +13,9 @@ rm -r Source/Lib* Source/ZLib Source/OpenEXR
 > Source/FreeImage/PluginG3.cpp
 > Source/FreeImageToolkit/JPEGTransform.cpp
 
+mkdir cmake
+cp $RECIPE_DIR/cmake/*.cmake cmake
+
 mkdir -p build
 cd build
 
@@ -21,7 +24,6 @@ cmake -DCMAKE_INSTALL_PREFIX=$PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DBUILD_SHARED_LIBS=ON \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_MODULE_PATH="$RECIPE_DIR/cmake;${CMAKE_MODULE_PATH}" \
       -DCMAKE_FIND_ROOT_PATH=$PREFIX \
       -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
       -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \

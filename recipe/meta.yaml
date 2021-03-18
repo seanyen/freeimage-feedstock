@@ -19,7 +19,7 @@ source:
   - path: FreeImageConfig-static.h
 
 build:
-  number: 6
+  number: 7
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -44,7 +44,7 @@ requirements:
     - libpng
     - zlib
     - libraw
-    - libwebp
+    - libwebp-base
     - ilmbase
 
 test:
@@ -54,10 +54,13 @@ test:
     - test -f $PREFIX/lib/libfreeimage.{{ version.split('.')[0] }}${SHLIB_EXT}  # [osx]
     - test -f $PREFIX/lib/libfreeimage-{{ version }}${SHLIB_EXT}  # [unix]
     - test -f $PREFIX/include/FreeImage.h  # [unix]
-
+    # The FreeImage name (camelcase in Windows) is for backward compatibility
+    - if not exist %PREFIX%\\Library\\include\\FreeImage.h (exit 1)  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\FreeImage.lib (exit 1)  # [win]
+    - if not exist %PREFIX%\\Library\\bin\\FreeImage.dll (exit 1)  # [win]
 about:
   home: http://freeimage.sourceforge.net/
-  license: GPLv2 GPLv3 FreeImage
+  license: GPLv2 OR GPLv3 OR FreeImage
   license_file:
       - license-fi.txt
       - license-gplv2.txt

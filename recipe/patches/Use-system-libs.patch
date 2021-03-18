@@ -712,7 +712,7 @@ diff --git a/Source/Metadata/XTIFF.cpp b/Source/Metadata/XTIFF.cpp
 index d5be902..2ff64f7 100644
 --- a/Source/Metadata/XTIFF.cpp
 +++ b/Source/Metadata/XTIFF.cpp
-@@ -29,13 +29,18 @@
+@@ -29,13 +29,49 @@
  #pragma warning (disable : 4786) // identifier was truncated to 'number' characters
  #endif
  
@@ -726,7 +726,38 @@ index d5be902..2ff64f7 100644
  
 +extern "C"
 +{
++#ifndef _WIN32
 +    int _TIFFDataSize(TIFFDataType type);
++#else
++    int _TIFFDataSize(TIFFDataType type)
++    {
++   	    switch (type)
++	       {
++		          case TIFF_BYTE:
++		          case TIFF_SBYTE:
++		          case TIFF_ASCII:
++		          case TIFF_UNDEFINED:
++		              return 1;
++		          case TIFF_SHORT:
++		          case TIFF_SSHORT:
++		              return 2;
++		          case TIFF_LONG:
++		          case TIFF_SLONG:
++		          case TIFF_FLOAT:
++		          case TIFF_IFD:
++		          case TIFF_RATIONAL:
++	          	case TIFF_SRATIONAL:
++		              return 4;
++		          case TIFF_DOUBLE:
++		          case TIFF_LONG8:
++		          case TIFF_SLONG8:
++		          case TIFF_IFD8:
++		              return 8;
++		          default:
++		              return 0;
++	       }
++    }
++#endif
 +}
 +
  // ----------------------------------------------------------

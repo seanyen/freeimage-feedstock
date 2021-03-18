@@ -4,13 +4,17 @@ patch -p1 < %RECIPE_DIR%/patches/Use-system-libs.patch
 patch -p1 < %RECIPE_DIR%/patches/Fix-compatibility-with-system-libpng.patch
 patch -p1 < %RECIPE_DIR%/patches/CVE-2019-12211-13.patch
 
-# remove all included libs to make sure these don't get used during compile
-rm -r Source/Lib* Source/ZLib Source/OpenEXR
+rem remove all included libs to make sure these don't get used during compile
+del /Q /S Source\Lib* Source\ZLib Source\OpenEXR
 
 rem clear files which cannot be built due to dependencies on private headers
 rem see also unbundle patch
 echo "" > Source/FreeImage/PluginG3.cpp
 echo "" > Source/FreeImageToolkit/JPEGTransform.cpp
+
+rem copy CMake files
+mkdir cmake
+copy  %RECIPE_DIR%\cmake\*.cmake cmake
 
 mkdir build
 cd build
@@ -20,19 +24,15 @@ cmake -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       -DCMAKE_INSTALL_LIBDIR=lib ^
       -DBUILD_SHARED_LIBS=ON ^
       -DCMAKE_BUILD_TYPE=Release ^
-      -DCMAKE_MODULE_PATH="%RECIPE_DIR%/cmake;${CMAKE_MODULE_PATH}" ^
-      -DCMAKE_FIND_ROOT_PATH=%LIBRARY_PREFIX% ^
-      -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY ^
-      -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY ^
-      -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER ^
-      -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY ^
-      -DCMAKE_FIND_FRAMEWORK=NEVER ^
-      -DCMAKE_FIND_APPBUNDLE=NEVER ^
       -G "Ninja" ^
       ..
+if errorlevel 1 exit 1
 
-ninja
+ninja -v
+if errorlevel 1 exit 1
+
 ninja install
+if errorlevel 1 exit 1
 
 rem cmake -E create_symlink ${PREFIX}/lib/libfreeimage${SHLIB_EXT} ${PREFIX}/lib/libfreeimage-${PKG_VERSION}${SHLIB_EXT}
 
