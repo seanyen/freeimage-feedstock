@@ -44,7 +44,7 @@ requirements:
     - libpng
     - zlib
     - libraw
-    - libwebp-base
+    - libwebp-base >=1.2
     - ilmbase
 
 test:
