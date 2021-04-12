@@ -12,8 +12,8 @@ libpng:
 - '1.6'
 libtiff:
 - '4'
-libwebp:
-- '1.1'
+libwebp_base:
+- '1'
 openexr:
 - '2.5'
 openjpeg:
